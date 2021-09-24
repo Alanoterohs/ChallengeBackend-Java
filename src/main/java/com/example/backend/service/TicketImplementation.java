@@ -10,6 +10,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.example.backend.models.Comment;
 import com.example.backend.models.Ticket;
 import com.google.gson.Gson;
 import com.google.api.client.util.Base64;
@@ -41,9 +42,7 @@ public class TicketImplementation {
 	
 	@Transactional
 	public static Ticket getComments(Long id) throws Exception {
-		
 		try {			
-			
 //			curl https://teclab1593636133.zendesk.com/api/v2/tickets/42/comments.json \
 	        RestTemplate restTemplate = new RestTemplate();
 	        String REST_SERVICE_URL = URL + id + "/comments.json";
@@ -64,5 +63,18 @@ public class TicketImplementation {
 		
 	}
     
+	public static String addComment(Long id, String body) {
 	
+		RestTemplate restTemplate = new RestTemplate();
+		String REST_SERVICE_URL = URL + id + ".json";
+        HttpHeaders httpHeaders = getHeaders();
+		String JsonRequest = "{\"ticket\": {\"comment\": { \"body\": \"" + body + "\", \"author_id\": 400041509731 }}}";
+		
+		HttpEntity<String> httpEntity = new HttpEntity<>(JsonRequest, httpHeaders);
+		
+		restTemplate.exchange(REST_SERVICE_URL, HttpMethod.PUT, httpEntity, Ticket.class);
+		
+		return "comment added";
+		
+	}
 }
