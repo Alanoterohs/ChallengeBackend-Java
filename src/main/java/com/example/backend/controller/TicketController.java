@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.backend.models.Ticket;
+
 import com.example.backend.service.TicketImplementation;
 
 @RestController
@@ -34,6 +34,19 @@ public class TicketController {
 	        return ResponseEntity
 	                .status(HttpStatus.NOT_FOUND)
 	                .body("Error Message: id not found");
+		}
+	}
+	
+	@PutMapping("/addComment")
+	public ResponseEntity<?> addComment(@RequestParam(value = "id") Long id, @RequestParam(value = "body") String body) {
+		try {
+			return ResponseEntity
+					.status(HttpStatus.ACCEPTED)
+					.body(TicketImplementation.addComment(id, body));
+		} catch (Exception e) {
+			return ResponseEntity
+					.status(HttpStatus.BAD_REQUEST)
+					.body("Error: Ticket not found");
 		}
 	}
 	
