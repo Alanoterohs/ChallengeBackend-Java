@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.backend.models.Subject;
 import com.example.backend.repository.SubjectRepository;
@@ -18,17 +19,20 @@ public class SubjectImplementation implements SubjectService {
 	}
 	
 	@Override
+	@Transactional
 	public List<Subject> getAllSubject() {
 		return subjectRepository.findAll();
 	}
 
 	@Override
+	@Transactional
 	public Subject createSubject(Subject subject) {
 		subjectRepository.save(subject);
 		return subject;
 	}
 
 	@Override
+	@Transactional
 	public Subject updateSubject(Subject subject, Long id) {
 		Optional<Subject> subjectOptional = (Optional<Subject>) subjectRepository.findById(id);
 		Subject newSubject = subjectOptional.get();
@@ -40,12 +44,13 @@ public class SubjectImplementation implements SubjectService {
 	}
 
 	@Override
-	public boolean deleteSubject(Long id) {
+	@Transactional
+	public String deleteSubject(Long id) {
 		if(subjectRepository.existsById(id)) {
 			subjectRepository.deleteById(id);
-			return true;
+			return "Subject deleted";
 		} else {			
-			return false;
+			return "Subject not found";
 		}
 	}
 

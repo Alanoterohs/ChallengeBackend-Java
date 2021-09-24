@@ -9,5 +9,5 @@ public interface CareerService {
 	public List<Career> getAllCareer();
 	public Career createCareer(Career career);
 	public Career updateCareer(Career career, Long id);
-	public boolean deleteCareer(Long id);
+	public String deleteCareer(Long id);
 }

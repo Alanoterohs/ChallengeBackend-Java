@@ -9,6 +9,6 @@ public interface SubjectService {
 	public List<Subject> getAllSubject();
 	public Subject createSubject(Subject subject);
 	public Subject updateSubject(Subject subject, Long id);
-	public boolean deleteSubject(Long id);
+	public String deleteSubject(Long id);
 	
 }
