@@ -2,6 +2,8 @@ package com.example.backend.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,27 +30,51 @@ public class CareerController {
 	}
 	
 	@GetMapping("")
-	public List<Career> getAll() {
-		return careerService.getAllCareer();
+	public ResponseEntity<List<Career>> getAll() {
+		try {
+			return ResponseEntity
+					.status(HttpStatus.OK)
+					.body(careerService.getAllCareer());
+		} catch (Exception e) {			
+			return new ResponseEntity<List<Career>>(HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@PostMapping("")
-	public Career create(@RequestBody Career career) {
-		careerService.createCareer(career);
-		return career;
+	public ResponseEntity<Career> create(@RequestBody Career career) {
+		try {
+			return ResponseEntity
+					.status(HttpStatus.OK)
+					.body(careerService.createCareer(career));
+		} catch(Exception e) {
+			return new ResponseEntity<Career>(HttpStatus.BAD_REQUEST);
+		}
+		
 	}
 	
 	@PutMapping("/{id}")
-	public Career update(@RequestBody Career career, @PathVariable Long id) {
-		return careerService.updateCareer(career, id);
+	public ResponseEntity<?> update(@RequestBody Career career, @PathVariable Long id) {
+		try {
+			return ResponseEntity
+					.status(HttpStatus.OK)
+					.body(careerService.updateCareer(career, id));
+		} catch(Exception e) {
+	        return ResponseEntity
+	                .status(HttpStatus.NOT_FOUND)
+	                .body("Error Message: id not found");
+		}
 	}
 	
 	@DeleteMapping("/{id}")
-	public String delete(@PathVariable Long id) {
-		if(careerService.deleteCareer(id)) {
-			return "Career deleted";
-		} else {
-			return "Career not found";
+	public ResponseEntity<?> delete(@PathVariable Long id) {
+		try {
+			return ResponseEntity
+					.status(HttpStatus.OK)
+					.body(careerService.deleteCareer(id));
+		} catch(Exception e) {
+	        return ResponseEntity
+	                .status(HttpStatus.NOT_FOUND)
+	                .body("Error Message: id not found");
 		}
 	}
 	

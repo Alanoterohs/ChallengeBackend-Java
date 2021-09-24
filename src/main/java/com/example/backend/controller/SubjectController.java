@@ -2,6 +2,8 @@ package com.example.backend.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,28 +29,50 @@ public class SubjectController {
 	}
 	
 	@GetMapping("")
-	public List<Subject> get() {
-		return subjectService.getAllSubject();
+	public ResponseEntity<List<Subject>> get() {
+		try {
+			return ResponseEntity
+					.status(HttpStatus.OK)
+					.body(subjectService.getAllSubject());
+		} catch (Exception e) {			
+			return new ResponseEntity<List<Subject>>(HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@PostMapping("")
-	public Subject create(@RequestBody Subject subject) {
-		subjectService.createSubject(subject);
-		return subject;
+	public ResponseEntity<Subject> create(@RequestBody Subject subject) {
+		try {
+			return ResponseEntity
+					.status(HttpStatus.OK)
+					.body(subjectService.createSubject(subject));
+		} catch (Exception e) {			
+			return new ResponseEntity<Subject>(HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@PutMapping("/{id}")
-	public Subject update(@RequestBody Subject subject, @PathVariable Long id) {
-		subjectService.updateSubject(subject, id);
-		return subject;
+	public ResponseEntity<?> update(@RequestBody Subject subject, @PathVariable Long id) {
+		try {
+			return ResponseEntity
+					.status(HttpStatus.OK)
+					.body(subjectService.updateSubject(subject, id));
+		} catch (Exception e) {			
+			return ResponseEntity
+					.status(HttpStatus.NOT_FOUND)
+					.body("Error Message: subject not found");
+		}
 	}
 	
 	@DeleteMapping("/{id}")
-	public String update(@PathVariable Long id) {
-		if(subjectService.deleteSubject(id)) {
-			return "Subject deleted";
-		} else {
-			return "Subject not found";
+	public ResponseEntity<?> update(@PathVariable Long id) {
+		try {
+			return ResponseEntity
+					.status(HttpStatus.OK)
+					.body(subjectService.deleteSubject(id));
+		} catch (Exception e) {			
+			return ResponseEntity
+					.status(HttpStatus.NOT_FOUND)
+					.body("Error Message: subject not found");
 		}
 	}	
 }
