@@ -14,17 +14,18 @@ public class Comment {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getDescription() {
-		return body;
-	}
-	public void setDescription(String description) {
-		this.body = description;
-	}
-	public Long getId_author() {
+	public Long getAuthor_id() {
 		return author_id;
 	}
-	public void setId_author(Long id_author) {
-		this.author_id = id_author;
+	public void setAuthor_id(Long author_id) {
+		this.author_id = author_id;
 	}
+	public String getBody() {
+		return body;
+	}
+	public void setBody(String body) {
+		this.body = body;
+	}
+
 	
 }
